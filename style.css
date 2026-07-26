@@ -215,3 +215,79 @@ kbd {
 #restart-btn:hover {
   background: #9bbdff;
 }
+
+/* ---- Menú de pausa ---- */
+.pause-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  width: 220px;
+}
+
+.pause-actions.hidden {
+  display: none;
+}
+
+#resume-btn,
+#controls-btn {
+  background: var(--panel-bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 8px 24px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  width: 100%;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+#resume-btn {
+  background: var(--accent);
+  color: var(--bg);
+  border: none;
+}
+
+#resume-btn:hover {
+  background: #9bbdff;
+}
+
+#controls-btn:hover {
+  border-color: var(--accent);
+}
+
+.level-select {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.level-select select {
+  background: var(--panel-bg);
+  color: var(--fg);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 4px 8px;
+  font-size: 13px;
+  font-family: inherit;
+}
+
+#pause-controls {
+  width: 100%;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+#pause-controls.hidden {
+  display: none;
+}
+
+#pause-controls ul {
+  align-items: flex-start;
+}
