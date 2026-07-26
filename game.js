@@ -618,6 +618,118 @@ document.addEventListener('keydown', e => {
   updateHUD();
 });
 
+function attemptMove(dir) {
+  if (paused || gameOver) return;
+  if (!collide(current.shape, current.x + dir, current.y)) current.x += dir;
+  updateHUD();
+}
+
+function attemptRotate() {
+  if (paused || gameOver) return;
+  tryRotate();
+  updateHUD();
+}
+
+function attemptSoftDrop() {
+  if (paused || gameOver) return;
+  softDrop();
+}
+
+function attemptHardDrop() {
+  if (paused || gameOver) return;
+  hardDrop();
+  updateHUD();
+}
+
+function bindRepeatButton(el, fn) {
+  let timeoutId = null;
+  let intervalId = null;
+  const stop = e => {
+    if (e) e.preventDefault();
+    clearTimeout(timeoutId);
+    clearInterval(intervalId);
+    timeoutId = null;
+    intervalId = null;
+  };
+  el.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    fn();
+    timeoutId = setTimeout(() => {
+      intervalId = setInterval(fn, 90);
+    }, 220);
+  });
+  el.addEventListener('pointerup', stop);
+  el.addEventListener('pointerleave', stop);
+  el.addEventListener('pointercancel', stop);
+  el.addEventListener('contextmenu', e => e.preventDefault());
+}
+
+function bindTapButton(el, fn) {
+  el.addEventListener('pointerdown', e => {
+    e.preventDefault();
+    fn();
+  });
+  el.addEventListener('contextmenu', e => e.preventDefault());
+}
+
+bindRepeatButton(document.getElementById('mc-left'), () => attemptMove(-1));
+bindRepeatButton(document.getElementById('mc-right'), () => attemptMove(1));
+bindRepeatButton(document.getElementById('mc-down'), attemptSoftDrop);
+bindTapButton(document.getElementById('mc-rotate'), attemptRotate);
+bindTapButton(document.getElementById('mc-drop'), attemptHardDrop);
+bindTapButton(document.getElementById('mc-pause'), togglePause);
+
+(function setupCanvasGestures() {
+  let active = false;
+  let startX = 0, startY = 0, lastX = 0, lastY = 0, startTime = 0;
+  let stepX = 0;
+  let movedCells = false;
+
+  canvas.addEventListener('pointerdown', e => {
+    if (paused || gameOver) return;
+    active = true;
+    startX = lastX = e.clientX;
+    startY = lastY = e.clientY;
+    startTime = performance.now();
+    movedCells = false;
+    stepX = canvas.getBoundingClientRect().width / COLS;
+  });
+
+  canvas.addEventListener('pointermove', e => {
+    if (!active || paused || gameOver) return;
+    const dx = e.clientX - lastX;
+    if (Math.abs(dx) >= stepX) {
+      const dir = dx > 0 ? 1 : -1;
+      const steps = Math.trunc(Math.abs(dx) / stepX);
+      for (let i = 0; i < steps; i++) attemptMove(dir);
+      lastX += dir * steps * stepX;
+      movedCells = true;
+    }
+    const dy = e.clientY - lastY;
+    if (dy >= stepX) {
+      attemptSoftDrop();
+      lastY += stepX;
+      movedCells = true;
+    }
+  });
+
+  const end = e => {
+    if (!active) return;
+    active = false;
+    if (paused || gameOver) return;
+    const dx = e.clientX - startX;
+    const dy = e.clientY - startY;
+    const dt = performance.now() - startTime;
+    if (!movedCells && Math.abs(dx) < 12 && Math.abs(dy) < 12 && dt < 300) {
+      attemptRotate();
+    } else if (dy > 80 && dt < 300 && Math.abs(dx) < 40) {
+      attemptHardDrop();
+    }
+  };
+  canvas.addEventListener('pointerup', end);
+  canvas.addEventListener('pointercancel', () => { active = false; });
+})();
+
 restartBtn.addEventListener('click', init);
 resumeBtn.addEventListener('click', togglePause);
 controlsBtn.addEventListener('click', () => {

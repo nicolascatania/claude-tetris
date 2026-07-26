@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>Tetris</title>
   <link rel="stylesheet" href="style.css" />
 </head>
@@ -44,6 +44,19 @@
           </ul>
         </div>
       </aside>
+    </div>
+
+    <div class="mobile-controls" id="mobile-controls">
+      <div class="mc-row">
+        <button type="button" id="mc-left" class="mc-btn" aria-label="Mover izquierda">◀</button>
+        <button type="button" id="mc-rotate" class="mc-btn mc-rotate" aria-label="Rotar">⟳</button>
+        <button type="button" id="mc-right" class="mc-btn" aria-label="Mover derecha">▶</button>
+      </div>
+      <div class="mc-row">
+        <button type="button" id="mc-down" class="mc-btn" aria-label="Bajar">▼</button>
+        <button type="button" id="mc-drop" class="mc-btn mc-drop" aria-label="Caída rápida">⤓</button>
+        <button type="button" id="mc-pause" class="mc-btn mc-pause" aria-label="Pausa">⏸</button>
+      </div>
     </div>
 
     <div id="overlay" class="overlay hidden">
