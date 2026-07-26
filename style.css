@@ -233,20 +233,6 @@ kbd {
   background: #9bbdff;
 }
 
-.skin-select {
-  position: absolute;
-  top: 0;
-  right: 44px;
-  height: 32px;
-  background: var(--panel-bg);
-  color: var(--fg);
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 4px 8px;
-  font-size: 12px;
-  cursor: pointer;
-}
-
 /* ---- Menú de pausa ---- */
 .pause-actions {
   display: flex;
@@ -478,11 +464,6 @@ kbd {
 
   .theme-toggle {
     width: 30px;
-    height: 30px;
-  }
-
-  .skin-select {
-    right: 40px;
     height: 30px;
   }
 

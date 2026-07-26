@@ -770,11 +770,7 @@ function applySkin(skin) {
 }
 
 function createSkinSelect() {
-  const select = document.createElement('select');
-  select.id = 'skin-select';
-  select.className = 'skin-select';
-  select.setAttribute('aria-label', 'Cambiar skin');
-  select.title = 'Cambiar skin';
+  const select = document.getElementById('skin-select');
   for (const key of Object.keys(SKINS)) {
     const option = document.createElement('option');
     option.value = key;
@@ -782,7 +778,6 @@ function createSkinSelect() {
     select.appendChild(option);
   }
   select.addEventListener('change', () => applySkin(select.value));
-  themeToggle.insertAdjacentElement('afterend', select);
   return select;
 }
 
